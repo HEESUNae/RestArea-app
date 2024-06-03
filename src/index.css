@@ -25,9 +25,27 @@ li {
 a {
   text-decoration: none;
 }
+button {
+  cursor: pointer;
+}
 
 .inner {
   width: 144rem;
   margin: 0 auto;
   padding: 5rem 2rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1440px) {
+  .inner {
+    width: 100%;
+  }
+}
+@media (max-width: 992px) {
+  html {
+    font-size: 9px;
+  }
+  .detail-contents {
+    grid-template-columns: auto !important;
+  }
 }

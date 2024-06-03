@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { StyledHomePage } from './style';
 import { axiosApi } from '../../consts/axios';
 import { restListAtom } from '../../atom/restListAtom';
+import { Bedge } from '../../components/Bedge';
 
-type RestType = {
+export type RestType = {
   [key: string]: string | null;
 };
 
 export const HomePage = () => {
+  const navigate = useNavigate();
   const [restList, setRestList] = useRecoilState<RestType[]>(restListAtom);
-
   const [pageList, setPageList] = useState(Array.from({ length: 5 }, (v, i) => i + 1));
   const [pageActive, setPageActive] = useState(1);
 
@@ -18,7 +20,7 @@ export const HomePage = () => {
     getRestList(pageNum);
   };
 
-  // 휴게소 전체
+  // 휴게소 리스트
   const getRestList = async (page: number) => {
     try {
       // let data: FoodList[] = [];
@@ -43,60 +45,33 @@ export const HomePage = () => {
     }
   };
 
-  // 휴게소 편의 시설
-  const getFacilityList = async (code: string) => {
-    try {
-      const res = await axiosApi.get(
-        `/openapi/restinfo/restConvList?key=6761444832&type=json&numOfRows=99&pageNo=1&stdRestCd=${code}`
-      );
-      return res.data.list;
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  // 휴게소 추천 음식
-  const getFoodList = async (code: string) => {
-    try {
-      const res = await axiosApi.get(
-        `/openapi/restinfo/restBestfoodList?key=6761444832&type=json&numOfRows=99&pageNo=1&recommendyn=Y&stdRestCd=${code}`
-      );
-      return res.data.list;
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   useEffect(() => {
     getRestList(1);
-    getFacilityList('000007');
-    getFoodList('000007');
-    // getFoodList();
   }, []);
 
   return (
     <StyledHomePage>
-      <div className="banner-component">
+      <div className="banner-container">
         <div className="inner">
           <p className="sec-title">전국 고속도로 휴게소 정보</p>
           <p className="sec-info">휴게소 편의 시설과 추천 음식을 간편하게 조회하세요.</p>
         </div>
       </div>
 
-      <div className="rest-list-component">
+      <div className="rest-list-container">
         <div className="inner">
           <ul>
             {restList.map((item, idx) => (
               <li className="rest-list" key={idx}>
-                <a href="">
-                  <div className="bedge">{item.routeNm}</div>
+                <div onClick={() => navigate('/detail', { state: { codeNum: item.stdRestCd } })}>
+                  <Bedge name={item.routeNm} />
                   <p className="rest-name">{item.stdRestNm}</p>
                   <p className="rest-address">{item.svarAddr}</p>
-                </a>
+                </div>
               </li>
             ))}
           </ul>
-          <div className="page-component">
+          <div className="page-container">
             <button onClick={() => onClickPage(pageActive > 1 ? pageActive - 1 : 1)}>이전</button>
             {pageList.map((item) => (
               <button key={item} onClick={() => onClickPage(item)} className={item === pageActive ? 'active' : ''}>
@@ -107,27 +82,6 @@ export const HomePage = () => {
           </div>
         </div>
       </div>
-
-      {/* <div key={idx}>
-          <div>{item.routeNm}</div>
-          <strong>
-            {item.stdRestNm}
-            <span>{item.svarAddr}</span>
-          </strong>
-          {/* <p>{item.detail}</p> 
-        </div> */}
-
-      {/* <p>휴게소 추천 음식</p>
-      <ul>
-      {foodList.map((item, idx) => (
-        <li key={idx}>
-        <p>{item.foodNm}</p>
-        <p>{item.etc}</p>
-        <p>{item.stdRestNm}</p>
-        <p>{item.svarAddr}</p>
-        </li>
-        ))}
-      </ul> */}
     </StyledHomePage>
   );
 };

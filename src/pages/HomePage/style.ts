@@ -2,8 +2,9 @@ import styled from 'styled-components';
 import { bgImg } from '../../consts/images';
 
 export const StyledHomePage = styled.div`
-  .banner-component {
+  .banner-container {
     background: url(${bgImg.visual}) no-repeat 50% 55%;
+    background-attachment: fixed;
     background-size: cover;
     .inner {
       text-align: center;
@@ -20,11 +21,8 @@ export const StyledHomePage = styled.div`
       color: #fff;
     }
   }
-  /* p {
-    white-space: pre-line;
-  } */
 
-  .rest-list-component {
+  .rest-list-container {
     background-color: #dceef8;
     ul {
       display: grid;
@@ -67,7 +65,7 @@ export const StyledHomePage = styled.div`
         }
       }
     }
-    .page-component {
+    .page-container {
       display: flex;
       justify-content: center;
       margin-top: 3rem;

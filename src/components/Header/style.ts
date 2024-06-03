@@ -6,10 +6,8 @@ export const StyledHeader = styled.header`
     padding: 2rem;
   }
   .logo {
-    a {
-      font-size: 1.8rem;
-      font-weight: 600;
-      color: #fff;
-    }
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #fff;
   }
 `;
