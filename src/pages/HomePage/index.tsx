@@ -23,20 +23,8 @@ export const HomePage = () => {
   // 휴게소 리스트
   const getRestList = async (page: number) => {
     try {
-      // let data: FoodList[] = [];
-      // let count = 1;
-      // for (let i = 1; i <= count; i++) {
-      // // 휴게소 전체
-      //   const res = await axiosApi.get(
-      //     `/openapi/restinfo/restThemeList?key=6761444832&type=json&pageNo=${i}&numOfRows=99`
-      //   );
-      //   count = res.data.pageSize;
-      //   data.push(...res.data.list);
-      // }
-      // setRestList(data);
-
       const res = await axiosApi.get(
-        `/openapi/restinfo/restThemeList?key=6761444832&type=json&pageNo=${page}&numOfRows=30`
+        `/openapi/restinfo/restThemeList?key=${process.env.REACT_APP_REST_API}&type=json&pageNo=${page}&numOfRows=30`
       );
       setRestList(res.data.list);
       setPageActive(page);
@@ -71,6 +59,7 @@ export const HomePage = () => {
               </li>
             ))}
           </ul>
+
           <div className="page-container">
             <button onClick={() => onClickPage(pageActive > 1 ? pageActive - 1 : 1)}>이전</button>
             {pageList.map((item) => (

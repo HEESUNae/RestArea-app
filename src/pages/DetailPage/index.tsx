@@ -8,6 +8,7 @@ import { axiosApi } from '../../consts/axios';
 import { Bedge } from '../../components/Bedge';
 import { PrimaryBtn } from '../../components/Button/PrimaryBtn';
 import { Preloader } from '../../components/Preloader';
+import { KakaoMap } from '../../components/Map';
 
 export const DetailPage = () => {
   const location = useLocation();
@@ -33,7 +34,7 @@ export const DetailPage = () => {
   const getFacilityList = async (code: string) => {
     try {
       const res = await axiosApi.get(
-        `/openapi/restinfo/restConvList?key=6761444832&type=json&numOfRows=99&pageNo=1&stdRestCd=${code}`
+        `/openapi/restinfo/restConvList?key=${process.env.REACT_APP_REST_API}&type=json&numOfRows=99&pageNo=1&stdRestCd=${code}`
       );
       setFacilityList(res.data.list);
     } catch (e) {
@@ -45,7 +46,7 @@ export const DetailPage = () => {
   const getFoodList = async (code: string) => {
     try {
       const res = await axiosApi.get(
-        `/openapi/restinfo/restBestfoodList?key=6761444832&type=json&numOfRows=99&pageNo=1&recommendyn=Y&stdRestCd=${code}`
+        `/openapi/restinfo/restBestfoodList?key=${process.env.REACT_APP_REST_API}&type=json&numOfRows=99&pageNo=1&recommendyn=Y&stdRestCd=${code}`
       );
       setFoodList(res.data.list);
     } catch (e) {
@@ -95,7 +96,9 @@ export const DetailPage = () => {
                 </div>
               </div>
               {/* 지도 */}
-              <div className="rest-map">지도자리</div>
+              <div className="rest-map">
+                <KakaoMap address={restDetail.svarAddr} title={restDetail.stdRestNm} />
+              </div>
             </div>
           </div>
 
